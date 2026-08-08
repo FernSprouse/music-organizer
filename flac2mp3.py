@@ -87,7 +87,7 @@ def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathL
 
     # define the string cleaning function
     def _file_to_term_str(f: Path) -> str:
-        return "\"" + str(f).replace(r'$', r'\$') + "\""
+        return "\"" + str(f).replace(r'$', r'\$').replace(r'"', r'\"') + "\""
     
     # check that tdir is Path and dir
     tdir = Path(tdir)
