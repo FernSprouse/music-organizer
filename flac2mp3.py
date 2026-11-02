@@ -14,6 +14,7 @@ from functools import partial
 from itertools import chain
 from multiprocessing import Pool
 from pathlib import Path
+from shlex import quote
 
 from rich import print
 from tqdm import tqdm
@@ -84,10 +85,6 @@ def get_changelog(sdir: os.PathLike, tdir: os.PathLike, mkdir: bool = False) -> 
 
 
 def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathLike, tsuffix: str = '.mp3', qscale: int = 0, diff_dir: os.PathLike | None = None) -> Sequence[str]:
-
-    # define the string cleaning function
-    def _file_to_term_str(f: Path) -> str:
-        return "\"" + str(f).replace(r'$', r'\$').replace(r'"', r'\"') + "\""
     
     # check that tdir is Path and dir
     tdir = Path(tdir)
@@ -113,8 +110,8 @@ def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathL
         t.parent.mkdir(parents=True, exist_ok=True)
 
         # handle special characters in s and t
-        source_str = _file_to_term_str(s)
-        target_str = _file_to_term_str(t)
+        source_str = quote(s)
+        target_str = qoute(t)
 
         # check if source is already an mp3, if so just make a copy command
         if s.suffix == tsuffix:
