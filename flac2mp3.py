@@ -21,7 +21,7 @@ from tqdm import tqdm
 
 
 def get_file_list(target_dir: os.PathLike, search_exp: Sequence[str]) -> tuple[Path, list[Path]]:
-    
+
     # check target_dir
     target_dir = Path(target_dir)
     if not target_dir.is_dir():
@@ -29,7 +29,7 @@ def get_file_list(target_dir: os.PathLike, search_exp: Sequence[str]) -> tuple[P
 
     # check if iterable is single element str, then cast to iterable
     if isinstance(search_exp, str):
-        search_exp = [search_exp]   
+        search_exp = [search_exp]
 
     # walk the target dir for all matching files and trim base dir
     base_dir_len = len(target_dir.parts)
@@ -85,7 +85,7 @@ def get_changelog(sdir: os.PathLike, tdir: os.PathLike, mkdir: bool = False) -> 
 
 
 def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathLike, tsuffix: str = '.mp3', qscale: int = 0, diff_dir: os.PathLike | None = None) -> Sequence[str]:
-    
+
     # check that tdir is Path and dir
     tdir = Path(tdir)
     if not tdir.is_dir():
@@ -110,8 +110,8 @@ def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathL
         t.parent.mkdir(parents=True, exist_ok=True)
 
         # handle special characters in s and t
-        source_str = quote(s)
-        target_str = qoute(t)
+        source_str = quote(str(s))
+        target_str = quote(str(t))
 
         # check if source is already an mp3, if so just make a copy command
         if s.suffix == tsuffix:
@@ -129,7 +129,7 @@ def generate_commands(sources: Iterable[Path], sdir: os.PathLike, tdir: os.PathL
             d_file = Path(diff_dir) / sub_dir
 
             d_file.parent.mkdir(parents=True, exist_ok=True)
-            d_str = _file_to_term_str(d_file)
+            d_str = quote(str(d_file))
 
             # appending a second operation to the command instead of a second command
             # because this is multiprocessed, the copy order *might* appear first if its alone
